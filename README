@@ -1,0 +1,99 @@
+Nume: Dragne Lavinia-Stefana
+Grupa: 314 CA
+
+	STRUCTURI DE DATE
+	Tema #1 Music Playlist
+
+Acesta este fisierul README corespunzator prezentarii implementarii rezolvarilor mele la tema 1.
+
+	Continutul proiectului este urmatorul:
+
+-tema1.c contine codul sursa al programului corespunzator
+
+-tema1.h contine header-ul asociat codului sursa
+
+-un fisier Makefile ce are urmatoarele utilizari:
+	-build: compileaza codul sursa in executabil;
+	-clean: sterge toate executabilele create;
+
+-acest fisier README.
+
+	Prezentarea solutiei:
+
+	Semnificatia functiilor:
+
+  Functia init_list initializeaza o lista, dupa ce aceasta este apelata, adica
+seteaza valorile initiale pentru campurile specifice.
+
+  Functia pozitie_cursor primeste ca parametru lista de melodii si
+intoarce valoarea pozitiei pe care se afla cursorul, in playlist. Aceasta se
+realizeaza parcurgand lista pana la final si comparand nodul pe care ma aflu cu
+nodul la care pointeaza cursorul.
+
+  Functia melody_exist primeste o lista si un nod (o melodie) ca parametri si
+intoarce pozitia pe care se afla melodia data, in lista. Daca aceasta nu se regaseste,
+se va intoarce pozitia -1. Aceasta se realizeaza parcurgand lista pana la final sau pana 
+cand nu am gasit inca melodia dorita.
+
+  Functia add_nth_node, pe baza listei primite ca parametru, a nodului si a unei pozitii anume,
+creaza un nou nod in lista si il adauga pe pozitia n. Datele din noul nod al listei vor fi
+identice cu datele din nodul primit ca si parametru de catre functie. Se trateaza particular 
+cazurile in care noul nod este capul sau coada listei, daca nu exista lista sau pozitia 
+data ca si parametru.
+
+  Functia remove_nth_node elimina un nod de pe o pozitie specifica n, data ca si parametru.
+Se refac legaturile primul-al doilea daca nodul ce trebuie sters este pe prima pozitie,
+respectiv ultimul-penultimul, daca este in coada listei. Daca nodul trebuie sters de pe
+o pozitie oarecare, se parcurge lista pana la acea pozitie si se refac legaturile intre nodul
+urmator si cel anterior celui sters. In toate cazurile se tine cont de pozitia cursorului in lista. 
+Daca acesta pointeaza la melodia ce trebuie stearsa, el va fi mutat pe pozitia urmatoare in lista,
+cand este posibil, sau pe cea anterioara, in cazul stergerii cozii listei. 
+
+  Functia free_list primeste ca parametru o lista si elibereaza memoria folosita de toate nodurile,
+iar la sfarsit, elibereaza memoria folosita de structura.
+
+  Functia print_node scrie intr-un fisier, primit ca si parametru, o structura de tip Node,
+primita si ea ca si parametru.
+
+  Functia move_next muta cursorul, daca el exista, pe o pozitie urmatoare in lista, daca el nu este
+pe coada listei sau afiseaza un mesaj corespunzator, in cazul in care acesta nu exista.
+
+  Functia move_prev muta cursorul, daca el exista, pe o pozitie anterioara in lista, daca el nu este
+pe capul listei sau afiseaza un mesaj corespunzator, in cazul in care acesta nu exista.
+
+  Functia pars_content_file extrage datele despre o melodie, dintr-un fisier primit ca si parametru,
+in campurile unei structuri de tip Node, pe care o returneaza mai apoi.
+
+	Algoritmul:
+
+  	String-ul "comanda[]" retine, pe rand, comanda pe care trebuie sa o aplic playlist-ului. In urma citirii
+si parsarii comenzii din fisierului .in, dat ca parametru in linia de comanda, vor rezulta in comanda1[]
+primul cuvant, in comanda2[] cel de-al doilea, iar in name_song[], numele melodiei, acolo unde este cazul.
+Name_file_song reprezinta string-ul, in care este stocata atat calea catre melodia dorita, cat si numele melodiei.
+Folosesc acest string pentru a deschide fisierul cu melodia respectiva. In campul nume_fisier, al structurii
+Node, va fi memorat numele fisierului .mp3, dat ca parametru in linia de comanda. 
+  	Deschid fisierul melodie si parsez continutul in structura Node, cu ajutorul functie pars_content_file.
+In functie de primul cuvant din comanda, respectiv al doilea, vad daca comanda admite si name_song sau nu.
+  	In functie de comanda, adaug numele melodiilor in lista, cu functia add_nth_node. Inainte de a le adauga
+verific daca ele exista in lista deja si care este pozitia cursorului cu ajutorul functiilor 
+melody_exist, respectiv pozitie_cursor. Daca acestea existau deja, le sterg din vechea pozitie, cu
+remove_nth_node. La comanda de ADD_AFTER tin cont daca pozitia cursorului era identica cu pozitia anterioara
+a melodiei, ce trebuia adaugata, si daca da, ignor comanda. Tin cont de pozitia pe care i-o dau ca parametru
+functiei de stergere, remove_nth_node, deoarece in urma adaugarii melodiei, pe o pozitie noua, s-a modificat
+si dimensiunea listei, deci implicit pozitia anterioara a melodiei.
+  	Comanda DEL_SONG cauta in lista, pe baza functiei melody_exist, melodia ce trebuie stearsa si daca
+o gaseste o sterge, cu functia remove_nth_node.
+	Comenzile DEL_FIRST, DEL_LAST respectiv DEL_CURR sterg cu ajutorul functiei remove_nth_node melodia
+de pe pozitiile 0, din coada si pozitia curenta a cursorului (obtinuta cu ajutorul functiei pozitie_cursor).
+Se tine cont de cazurile particulare in care lista e goala, nu exista ea sau cursorul, cazuri in care se
+afiseaza mesaje specifice.
+	Comenzile de MOVE_NEXT si MOVE_PREV folosesc functiile move_next si move_prev carora le dau ca parametri
+lista de melodii.
+	Comenzile SHOR_FIRST, SHOW_LAST si SHOW_CURR afiseaza nodul de pe pozitia 0, din coada sau cel pe care se
+afla cursorul, cu ajutorul functiei print_node, careia ii sunt date nodurile de head, tail si cursor ca si parametri. 
+Se tine cont de cazurile particulare, in care nu exista primul, ultimul sau nodul curent, cazuri in care se afiseaza 
+mesaje corespunzatoare. Comanda SHOW_PLAYLIST foloseste functia SHOW_PLAYLIST, careia ii da lista ca si parametru,
+pentru a afisa plyalist-ul.
+
+	
+  
